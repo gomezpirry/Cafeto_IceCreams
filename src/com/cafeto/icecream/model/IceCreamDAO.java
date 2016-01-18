@@ -20,6 +20,8 @@ public enum IceCreamDAO {
 		cream.put("2", ice_cream);
 		ice_cream = new IceCream("3", "Cono", 2, 2500, "Vainilla");
 		cream.put("3", ice_cream);
+		ice_cream = new IceCream("4", "Ensalada", 1, 4500, "Frutos");
+		cream.put("4", ice_cream);
 
 	}
 

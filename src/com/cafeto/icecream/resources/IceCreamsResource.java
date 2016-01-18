@@ -51,6 +51,23 @@ public class IceCreamsResource {
 	public List<IceCream> getIceCreamsAsHtml() {
 		return creamService.getIceCreamAsList();
 	}
+	
+	/** function getIceCreams(). 
+	 *  This function displays all ice cream in stock
+	 */
+	@GET
+	@Path("sort")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public List<IceCream> getIceCreamsSort() {
+		return creamService.getIceCreamAsSortList();
+	}
+
+	@GET
+	@Path("sort")
+	@Produces(MediaType.TEXT_XML)
+	public List<IceCream> getIceCreamsAsSortHtml() {
+		return creamService.getIceCreamAsSortList();
+	}
 
 	/** function getCount(). 
 	 *  This function displays the number of ice cream that overcome a given cost.

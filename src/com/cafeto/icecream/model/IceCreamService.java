@@ -1,11 +1,9 @@
 package com.cafeto.icecream.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-
 
 /** Class IceCreamService. 
  *  In this class are added all function that operate the data structure
@@ -13,6 +11,8 @@ import java.util.Map;
 public class IceCreamService {
 
 	IceCreamDAO creamDAO;
+	private IceCream[] array;
+    private int length;
 
 	/** IceCreamService Constructor . 
 	 * 
@@ -42,6 +42,7 @@ public class IceCreamService {
 	public List<IceCream> getIceCreamAsList() {
 		List<IceCream> IceCreamList = new ArrayList<IceCream>();
 		IceCreamList.addAll(creamDAO.getIceCreams().values());
+		System.out.println(IceCreamList.toString());
 		return IceCreamList;
 	}
 
@@ -50,28 +51,61 @@ public class IceCreamService {
 	 */
 	public List<IceCream> getIceCreamAsSortList() {
 		List<IceCream> IceCreamList = new ArrayList<IceCream>();
-		Collection<IceCream> values = creamDAO.getIceCreams().values();
-	    IceCream[] creams= values.toArray(new IceCream[values.size()]);		
-		
-		for(int i= 0; i<creams.length-1; i++)
-			for(int j= 0; j< creams.length-i-1;j++) 
-				if (creams[j+1].getName().compareTo(creams[j].getName()) <= 0){
-					IceCream aux = creams[j+1]; 
-					creams[j+1] = creams[j]; 
-					creams[j]= aux; 
-				}
-		for(int i= 0; i<creams.length-1; i++)
-			IceCreamList.add(creams[i]);	
-		return IceCreamList;
-	}
+		IceCreamList.addAll(creamDAO.getIceCreams().values());
+		array = new IceCream[IceCreamList.size()];
 
-	/** Function getIceCreamCount(). 
+	    for(int i = 0; i< IceCreamList.size();i++)
+	    	array[i] = IceCreamList.get(i);   
+	    
+        this.length = array.length;
+        calcQuickSort(0, length - 1);
+        return Arrays.asList(array);
+    }      
+ 
+    /** calcQuickSort. Auxiliar function to performed quicksort
+     * 
+     */
+    private  void calcQuickSort(int lowerIndex, int higherIndex) {
+        
+        int i = lowerIndex;
+        int j = higherIndex;
+        String pivot = array[lowerIndex+(higherIndex-lowerIndex)/2].getName();
+
+        while (i <= j) {
+           while (array[i].getName().compareTo(pivot) < 0) 
+                i++;
+            
+            while (array[j].getName().compareTo(pivot) > 0)
+                j--;
+        
+            if (i <= j) {
+                exchangeValues(i, j);
+                i++;
+                j--;
+            }
+        }
+
+        if (lowerIndex < j)
+            calcQuickSort(lowerIndex, j);
+        if (i < higherIndex)
+            calcQuickSort(i, higherIndex);
+    }
+
+    private  void exchangeValues(int i, int j) {
+        IceCream temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+	
+
+
+    /** Function getIceCreamCount(). 
 	 * This function count all ice creams 
 	 */
 	public int getIceCreamCount() {
 		return creamDAO.getIceCreams().size();
 	}
-
+	
 	/** Function getIceCreamCostCount. 
 	 * This function count the ice creams that overcome a given cost 
 	 */
